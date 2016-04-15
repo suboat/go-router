@@ -14,13 +14,15 @@ type Route interface {
 	PathPrefix(string) *Route
 }
 
+type HTTPRouter interface {
+	Route
+}
+
+type WSRouter interface {
+	Route
+}
+
 type Router struct {
-	*HTTPRouter
-	*WSRouter
-}
-
-type HTTPRouter struct {
-}
-
-type WSRouter struct {
+	HTTPRouter
+	WSRouter
 }

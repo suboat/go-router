@@ -1,6 +1,6 @@
 package gorouter
 
-type WsRequest struct {
+type WSRequest struct {
 	Tag           string
 	RequestId     string
 	Header        *Header

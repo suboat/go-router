@@ -3,7 +3,7 @@ package gorouter
 import "net/http"
 
 type Route interface {
-	ListenAndServe(string, http.Handler) error
+	ListenAndServe(string) error
 
 	Handle(string, http.Handler) *Route
 	HandleFunc(string, func(http.ResponseWriter, *http.Request)) *Route

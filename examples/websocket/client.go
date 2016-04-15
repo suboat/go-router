@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
+	"github.com/suboat/go-router"
 	"log"
 	"net/url"
 	"os"
@@ -44,10 +45,11 @@ func startClient() {
 	for {
 		select {
 		case t := <-ticker.C:
-			if err := c.WriteMessage(websocket.TextMessage, []byte(t.String())); err != nil {
+			if b, err := makeWSRequest(t).Bytes(); err != nil {
+				exit <- err
+			} else if err := c.WriteMessage(websocket.TextMessage, b); err != nil {
 				logC("write:", err)
 				exit <- err
-				return
 			}
 		case <-interrupt:
 			logC("interrupt")
@@ -63,5 +65,15 @@ func startClient() {
 			c.Close()
 			return
 		}
+	}
+}
+
+func makeWSRequest(data interface{}) *gorouter.WSRequest {
+	return &gorouter.WSRequest{
+		Tag:       "Tag",
+		RequestId: "RequestId",
+		Method:    gorouter.MethodGet,
+		URL:       "URL",
+		Data:      data,
 	}
 }

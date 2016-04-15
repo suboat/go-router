@@ -9,8 +9,6 @@ type Route interface {
 	HandleFunc(string, func(http.ResponseWriter, *http.Request)) *Route
 
 	Methods(...string) *Route
-
-	Path(string) *Route
 	PathPrefix(string) *Route
 }
 

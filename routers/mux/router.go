@@ -9,37 +9,48 @@ import (
 type MuxRouter struct {
 	gr.HTTPRouter
 	Router *mux.Router
+	route  *mux.Route
+}
+
+func newMuxRouter(r *mux.Router) *MuxRouter {
+	return &MuxRouter{Router: r}
 }
 
 func NewMuxRouter() *MuxRouter {
-	return &MuxRouter{Router: mux.NewRouter()}
+	return newMuxRouter(mux.NewRouter())
 }
 
 func (r *MuxRouter) newRoute() *mux.Route {
-	return r.Router.NewRoute()
+	r.route = r.Router.NewRoute()
+	return r.route
+}
+
+func (r *MuxRouter) getRoute() *mux.Route {
+	if r.route == nil {
+		return r.newRoute()
+	}
+	return r.route
 }
 
 func (r *MuxRouter) ListenAndServe(addr string) error {
 	return http.ListenAndServe(addr, r.Router)
 }
 
-func (r *MuxRouter) Handle(path string, handler http.Handler) *mux.Route {
-	return r.newRoute().Path(path).Handler(handler)
+func (r *MuxRouter) Handle(path string, handler http.Handler) *MuxRouter {
+	r.newRoute().Path(path).Handler(handler)
+	return r
 }
 
-func (r *MuxRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) *mux.Route {
-	return r.newRoute().Path(path).HandlerFunc(f)
+func (r *MuxRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) *MuxRouter {
+	r.newRoute().Path(path).HandlerFunc(f)
+	return r
 }
 
-func (r *MuxRouter) Methods(methods ...string) *mux.Route {
-	return r.newRoute().Methods(methods...)
-}
-
-func (r *MuxRouter) Path(tpl string) *mux.Route {
-	return r.newRoute().Path(tpl)
+func (r *MuxRouter) Methods(methods ...string) *MuxRouter {
+	r.getRoute().Methods(methods...)
+	return r
 }
 
 func (r *MuxRouter) PathPrefix(tpl string) *MuxRouter {
-	r.Router = r.newRoute().PathPrefix(tpl).Subrouter()
-	return r
+	return newMuxRouter(r.newRoute().PathPrefix(tpl).Subrouter())
 }

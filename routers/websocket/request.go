@@ -16,6 +16,10 @@ type WSRequest struct {
 	Ignore    bool
 }
 
+func (s *WSRequest) Valid() bool {
+	return len(s.Method) != 0 && len(s.URL) != 0
+}
+
 func (s *WSRequest) Bytes() ([]byte, error) {
 	return json.Marshal(s)
 }

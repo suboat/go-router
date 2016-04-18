@@ -18,8 +18,8 @@ type HTTPRoute interface {
 
 type WSRoute interface {
 	Route
-	Handle(string, http.Handler) WSRoute
-	HandleFunc(string, func(http.ResponseWriter, *http.Request)) WSRoute
+	Handle(string) WSRoute
+	HandleFunc(string) WSRoute
 }
 
 type Router struct {

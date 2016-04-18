@@ -70,11 +70,12 @@ func (s *MyUpgrader) Close() error {
 }
 
 func startServer() {
-	if false {
+	switch 1 {
+	case 0:
 		http.HandleFunc("/echo", echo)
-		logS("start...")
+		logS("start...0")
 		exit <- http.ListenAndServe(host_server, nil)
-	} else {
+	case 1:
 		mux := NewMuxRouter().PathPrefix("/v1")
 		mux.HandleFunc("/",
 			func(w http.ResponseWriter, r *http.Request) {
@@ -89,7 +90,7 @@ func startServer() {
 		}
 		r := NewWSRouter(h)
 		r.HandleFunc("/echo")
-		logS("start...")
+		logS("start...1")
 		exit <- r.Error()
 		exit <- r.ListenAndServe(host_server)
 		exit <- r.Error()

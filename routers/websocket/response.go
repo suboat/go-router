@@ -9,7 +9,7 @@ type WSResponse struct {
 	Tag       string
 	RequestId string
 	Meta      *Meta
-	Method    string
+	Methods   []string
 	URL       string
 	Data      interface{}
 	Error     string
@@ -24,13 +24,13 @@ func NewWSResponse(req *WSRequest) (*WSResponse, error) {
 		Tag:       req.Tag,
 		RequestId: req.RequestId,
 		Meta:      req.Meta,
-		Method:    req.Method,
+		Methods:   req.Methods,
 		URL:       req.URL,
 	}, nil
 }
 
 func (s *WSResponse) Valid() bool {
-	return len(s.Method) != 0 && len(s.URL) != 0
+	return len(s.Methods) != 0 && len(s.URL) != 0
 }
 
 func (s *WSResponse) Bytes() ([]byte, error) {

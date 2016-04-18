@@ -19,7 +19,7 @@ type HTTPRoute interface {
 type WSRoute interface {
 	Route
 	Handle(string) WSRoute
-	HandleFunc(string) WSRoute
+	//HandleBind(string, f) WSRoute
 }
 
 type Router struct {

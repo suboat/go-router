@@ -73,7 +73,7 @@ func makeWSRequest(data interface{}) *WSRequest {
 	return &WSRequest{
 		Tag:       "Tag",
 		RequestId: "RequestId",
-		Method:    MethodGet,
+		Methods:   []string{MethodGet},
 		URL:       "URL",
 		Data:      data,
 	}

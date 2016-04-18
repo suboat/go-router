@@ -58,14 +58,17 @@ func (r *GinRouter) Error() error {
 	return r.err
 }
 
-func (r *GinRouter) Handle(path string, handler http.Handler) HTTPRoute {
-	r.newRoute(path, gin.WrapH(handler))
+func (r *GinRouter) HandleGin(path string, handler gin.HandlerFunc) HTTPRoute {
+	r.newRoute(path, handler)
 	return r
 }
 
+func (r *GinRouter) Handle(path string, handler http.Handler) HTTPRoute {
+	return r.HandleGin(path, gin.WrapH(handler))
+}
+
 func (r *GinRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) HTTPRoute {
-	r.newRoute(path, gin.WrapF(handler))
-	return r
+	return r.HandleGin(path, gin.WrapF(handler))
 }
 
 func (r *GinRouter) HandleBind(path string, handler HandleBind) HTTPRoute {

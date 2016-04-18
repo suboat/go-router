@@ -72,27 +72,35 @@ func (s *MyUpgrader) Close() error {
 func startServer() {
 	switch 1 {
 	case 0:
-		http.HandleFunc("/echo", echo)
-		logS("start...0")
-		exit <- http.ListenAndServe(host_server, nil)
+		exampleWebSocket()
 	case 1:
-		mux := NewMuxRouter().PathPrefix("/v1")
-		mux.HandleFunc("/",
-			func(w http.ResponseWriter, r *http.Request) {
-				logS("Success!!!")
-				logS(fmt.Sprintf("%#v", w))
-				logS(fmt.Sprintf("%#v", r))
-			},
-		).Methods("GET")
-		h, err := NewWSHandle(mux, NewMyUpgrader())
-		if err != nil {
-			exit <- err
-		}
-		r := NewWSRouter(h)
-		r.Bind("/echo")
-		logS("start...1")
-		exit <- r.Error()
-		exit <- r.ListenAndServe(host_server)
-		exit <- r.Error()
+		exampleWSRouter()
 	}
+}
+
+func exampleWebSocket() {
+	http.HandleFunc("/echo", echo)
+	logS("start...0")
+	exit <- http.ListenAndServe(host_server, nil)
+}
+
+func exampleWSRouter() {
+	mux := NewMuxRouter().PathPrefix("/v1")
+	mux.HandleFunc("/",
+		func(w http.ResponseWriter, r *http.Request) {
+			logS("Success!!!")
+			logS(fmt.Sprintf("%#v", w))
+			logS(fmt.Sprintf("%#v", r))
+		},
+	).Methods("GET")
+	h, err := NewWSHandle(mux, NewMyUpgrader())
+	if err != nil {
+		exit <- err
+	}
+	r := NewWSRouter(h)
+	r.Bind("/echo")
+	logS("start...1")
+	exit <- r.Error()
+	exit <- r.ListenAndServe(host_server)
+	exit <- r.Error()
 }

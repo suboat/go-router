@@ -17,34 +17,42 @@ func logS(v ...interface{}) {
 func startServer() {
 	switch 1 {
 	case 0:
-		r := NewMuxRouter().PathPrefix("/v1")
-		r.HandleFunc("/",
-			func(w http.ResponseWriter, r *http.Request) {
-				logS(fmt.Sprintf("%#v", r))
-			},
-		).Methods("GET")
-		r.HandleFunc("/id/{id}",
-			func(w http.ResponseWriter, r *http.Request) {
-				logS(fmt.Sprintf("%#v", r))
-			},
-		).Methods("GET")
-		logS("start...")
-		exit <- r.Error()
-		exit <- r.ListenAndServe(host_server)
+		exampleMuxRouter()
 	case 1:
-		r := NewGinRouter().PathPrefix("/v1")
-		r.HandleFunc("/",
-			func(w http.ResponseWriter, r *http.Request) {
-				logS(fmt.Sprintf("%#v", r))
-			},
-		).Methods("GET")
-		r.HandleFunc("/id/:id",
-			func(w http.ResponseWriter, r *http.Request) {
-				logS(fmt.Sprintf("%#v", r))
-			},
-		).Methods("GET")
-		logS("start...")
-		exit <- r.Error()
-		exit <- r.ListenAndServe(host_server)
+		exampleGinRouter()
 	}
+}
+
+func exampleMuxRouter() {
+	r := NewMuxRouter().PathPrefix("/v1")
+	r.HandleFunc("/",
+		func(w http.ResponseWriter, r *http.Request) {
+			logS(fmt.Sprintf("%#v", r))
+		},
+	).Methods("GET")
+	r.HandleFunc("/id/{id}",
+		func(w http.ResponseWriter, r *http.Request) {
+			logS(fmt.Sprintf("%#v", r))
+		},
+	).Methods("GET")
+	logS("start...")
+	exit <- r.Error()
+	exit <- r.ListenAndServe(host_server)
+}
+
+func exampleGinRouter() {
+	r := NewGinRouter().PathPrefix("/v1")
+	r.HandleFunc("/",
+		func(w http.ResponseWriter, r *http.Request) {
+			logS(fmt.Sprintf("%#v", r))
+		},
+	).Methods("GET")
+	r.HandleFunc("/id/:id",
+		func(w http.ResponseWriter, r *http.Request) {
+			logS(fmt.Sprintf("%#v", r))
+		},
+	).Methods("GET")
+	logS("start...")
+	exit <- r.Error()
+	exit <- r.ListenAndServe(host_server)
 }

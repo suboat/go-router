@@ -51,6 +51,10 @@ func (r *MuxRouter) HandleFunc(path string, handler func(http.ResponseWriter, *h
 	return r
 }
 
+func (r *MuxRouter) HandleBind(path string, handler HandleBind) HTTPRoute {
+	return r.Handle(path, handler)
+}
+
 func (r *MuxRouter) Methods(methods ...string) HTTPRoute {
 	r.getRoute().Methods(methods...)
 	return r

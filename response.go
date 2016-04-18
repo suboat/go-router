@@ -8,4 +8,5 @@ type Response interface {
 	Bytes() ([]byte, error)
 	FromBytes([]byte) error
 	GetResponseWriter() http.ResponseWriter
+	// TODO: 待需求扩展
 }

@@ -11,6 +11,7 @@ type HTTPRoute interface {
 	Route
 	Handle(string, http.Handler) HTTPRoute
 	HandleFunc(string, func(http.ResponseWriter, *http.Request)) HTTPRoute
+	HandleBind(string, HandleBind) HTTPRoute
 
 	Methods(...string) HTTPRoute
 	PathPrefix(string) HTTPRoute
@@ -18,8 +19,9 @@ type HTTPRoute interface {
 
 type WSRoute interface {
 	Route
-	Handle(string) WSRoute
-	HandleBind(string, WSHandler) WSRoute
+	Bind(string) WSRoute
+	Handle(string, WSHandler) WSRoute
+	HandleBind(string, HandleBind) WSRoute
 }
 
 type Router struct {

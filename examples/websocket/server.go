@@ -89,7 +89,7 @@ func startServer() {
 			exit <- err
 		}
 		r := NewWSRouter(h)
-		r.Handle("/echo")
+		r.Bind("/echo")
 		logS("start...1")
 		exit <- r.Error()
 		exit <- r.ListenAndServe(host_server)

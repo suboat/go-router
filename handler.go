@@ -8,7 +8,7 @@ type WSHandler interface {
 	ServeWS(Request) Response
 }
 
-type Handle interface {
+type HandleBind interface {
 	http.Handler
 	WSHandler
 }

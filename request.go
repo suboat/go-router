@@ -8,4 +8,5 @@ type Request interface {
 	Bytes() ([]byte, error)
 	FromBytes([]byte) error
 	GetRequest() *http.Request
+	// TODO: 待需求扩展
 }

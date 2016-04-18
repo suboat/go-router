@@ -6,15 +6,15 @@ import (
 )
 
 type WebSocketRouter struct {
-	Router HTTPRouter
+	Router HPRouter
 	err    error
 }
 
-func newWebSocketRouter(r HTTPRouter) *WebSocketRouter {
+func newWebSocketRouter(r HPRouter) *WebSocketRouter {
 	return &WebSocketRouter{Router: r}
 }
 
-func NewWebSocketRouter(r HTTPRouter) *WebSocketRouter {
+func NewWebSocketRouter(r HPRouter) *WebSocketRouter {
 	ws := newWebSocketRouter(r)
 	if r == nil {
 		ws.err = ErrRouter

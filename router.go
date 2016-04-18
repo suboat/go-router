@@ -7,13 +7,13 @@ type Route interface {
 	Error() error
 }
 
-type HTTPRouter interface {
+type HPRouter interface {
 	Route
-	Handle(string, http.Handler) HTTPRouter
-	HandleFunc(string, func(http.ResponseWriter, *http.Request)) HTTPRouter
+	Handle(string, http.Handler) HPRouter
+	HandleFunc(string, func(http.ResponseWriter, *http.Request)) HPRouter
 
-	Methods(...string) HTTPRouter
-	PathPrefix(string) HTTPRouter
+	Methods(...string) HPRouter
+	PathPrefix(string) HPRouter
 }
 
 type WSRouter interface {
@@ -23,6 +23,6 @@ type WSRouter interface {
 }
 
 type Router struct {
-	HTTPRouter
+	HPRouter
 	WSRouter
 }

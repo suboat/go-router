@@ -7,8 +7,8 @@ import (
 )
 
 type MuxRouter struct {
-	route  *mux.Route
 	Router *mux.Router
+	route  *mux.Route
 	err    error
 }
 

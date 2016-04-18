@@ -44,10 +44,10 @@ func (h *WSHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if mt, message, err := h.Func.ReadMessage(); err != nil {
 			h.Err = err
 			break
-		} else if req, err := h.HandleRequest(message); err != nil {
+		} else if req, err := h.HandleRequest(message, r); err != nil {
 			h.Err = err
 			continue
-		} else if resp, err := h.HandleResponse(req); err != nil {
+		} else if resp, err := h.HandleResponse(req, w); err != nil {
 			h.Err = err
 			continue
 		} else if result, err := resp.Bytes(); err != nil {
@@ -60,18 +60,19 @@ func (h *WSHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *WSHandle) HandleRequest(data []byte) (*WSRequest, error) {
+func (h *WSHandle) HandleRequest(data []byte, r *http.Request) (*WSRequest, error) {
 	req, err := BytesToWSRequest(data)
 	if err != nil {
 		return nil, err
 	} else if !req.Valid() {
 		return nil, ErrWSRequest
 	}
+	req.Request = r
 	return req, nil
 }
 
-func (h *WSHandle) HandleResponse(req *WSRequest) (*WSResponse, error) {
-	resp, err := NewWSResponse(req)
+func (h *WSHandle) HandleResponse(req *WSRequest, w http.ResponseWriter) (*WSResponse, error) {
+	resp, err := NewWSResponse(req, w)
 	if err != nil {
 		return nil, err
 	}

@@ -3,29 +3,32 @@ package router
 import (
 	"encoding/json"
 	. "github.com/suboat/go-router"
+	"net/http"
 )
 
 type WSResponse struct {
-	Tag       string
-	RequestId string
-	Meta      *Meta
-	Methods   []string
-	URL       string
-	Data      interface{}
-	Error     string
-	Success   bool
+	ResponseWriter http.ResponseWriter `json:"-"`
+	Tag            string
+	RequestId      string
+	Meta           *Meta
+	Methods        []string
+	URL            string
+	Data           interface{}
+	Error          string
+	Success        bool
 }
 
-func NewWSResponse(req *WSRequest) (*WSResponse, error) {
+func NewWSResponse(req *WSRequest, w http.ResponseWriter) (*WSResponse, error) {
 	if req == nil {
 		return nil, ErrWSRequest
 	}
 	return &WSResponse{
-		Tag:       req.Tag,
-		RequestId: req.RequestId,
-		Meta:      req.Meta,
-		Methods:   req.Methods,
-		URL:       req.URL,
+		ResponseWriter: w,
+		Tag:            req.Tag,
+		RequestId:      req.RequestId,
+		Meta:           req.Meta,
+		Methods:        req.Methods,
+		URL:            req.URL,
 	}, nil
 }
 

@@ -3,9 +3,11 @@ package router
 import (
 	"encoding/json"
 	. "github.com/suboat/go-router"
+	"net/http"
 )
 
 type WSRequest struct {
+	Request   *http.Request `json:"-"`
 	Tag       string
 	RequestId string
 	Meta      *Meta
@@ -13,6 +15,10 @@ type WSRequest struct {
 	URL       string
 	Data      interface{}
 	Ignore    bool
+}
+
+func NewWSRequest(r *http.Request) *WSRequest {
+	return &WSRequest{Request: r}
 }
 
 func (s *WSRequest) Valid() bool {

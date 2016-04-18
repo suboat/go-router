@@ -1,15 +1,15 @@
-package mux
+package router
 
 import (
 	"github.com/gorilla/mux"
-	gr "github.com/suboat/go-router"
+	. "github.com/suboat/go-router"
 	"net/http"
 )
 
 type MuxRouter struct {
-	gr.HTTPRouter
-	Router *mux.Router
 	route  *mux.Route
+	Router *mux.Router
+	err    error
 }
 
 func newMuxRouter(r *mux.Router) *MuxRouter {
@@ -33,24 +33,29 @@ func (r *MuxRouter) getRoute() *mux.Route {
 }
 
 func (r *MuxRouter) ListenAndServe(addr string) error {
-	return http.ListenAndServe(addr, r.Router)
+	r.err = http.ListenAndServe(addr, r.Router)
+	return r.err
 }
 
-func (r *MuxRouter) Handle(path string, handler http.Handler) *MuxRouter {
+func (r *MuxRouter) Error() error {
+	return r.err
+}
+
+func (r *MuxRouter) Handle(path string, handler http.Handler) HTTPRouter {
 	r.newRoute().Path(path).Handler(handler)
 	return r
 }
 
-func (r *MuxRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) *MuxRouter {
+func (r *MuxRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) HTTPRouter {
 	r.newRoute().Path(path).HandlerFunc(f)
 	return r
 }
 
-func (r *MuxRouter) Methods(methods ...string) *MuxRouter {
+func (r *MuxRouter) Methods(methods ...string) HTTPRouter {
 	r.getRoute().Methods(methods...)
 	return r
 }
 
-func (r *MuxRouter) PathPrefix(tpl string) *MuxRouter {
+func (r *MuxRouter) PathPrefix(tpl string) HTTPRouter {
 	return newMuxRouter(r.newRoute().PathPrefix(tpl).Subrouter())
 }

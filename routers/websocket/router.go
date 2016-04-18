@@ -1,45 +1,51 @@
-package websocket
+package router
 
 import (
-	gr "github.com/suboat/go-router"
+	. "github.com/suboat/go-router"
 	"net/http"
 )
 
-type WSRouter struct {
-	gr.WSRouter
-	Router gr.HTTPRouter
+type WebSocketRouter struct {
+	Router HTTPRouter
+	err    error
 }
 
-func newMuxRouter(r gr.HTTPRouter) *WSRouter {
-	return &WSRouter{Router: r}
+func newMuxRouter(r HTTPRouter) *WebSocketRouter {
+	return &WebSocketRouter{Router: r}
 }
 
-func NewWSRouter(r gr.HTTPRouter) (*WSRouter, error) {
+func NewWSRouter(r HTTPRouter) *WebSocketRouter {
+	ws := newMuxRouter(r)
 	if r == nil {
-		return nil, gr.ErrRouter
+		ws.err = ErrRouter
 	}
-	return newMuxRouter(r), nil
+	return ws
 }
 
-func (r *WSRouter) ListenAndServe(addr string) error {
-	return http.ListenAndServe(addr, r.Router)
+func (r *WebSocketRouter) ListenAndServe(addr string) error {
+	r.err = r.Router.ListenAndServe(addr)
+	return r.err
 }
 
-func (r *WSRouter) Handle(path string, handler http.Handler) *WSRouter {
+func (r *WebSocketRouter) Error() error {
+	return r.err
+}
+
+func (r *WebSocketRouter) Handle(path string, handler http.Handler) WSRouter {
 	r.Router.Handle(path, handler)
 	return r
 }
 
-func (r *WSRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) *WSRouter {
+func (r *WebSocketRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) WSRouter {
 	r.Router.HandleFunc(path, f)
 	return r
 }
 
-func (r *WSRouter) Methods(methods ...string) *WSRouter {
+func (r *WebSocketRouter) Methods(methods ...string) WSRouter {
 	r.Router.Methods(methods...)
 	return r
 }
 
-func (r *WSRouter) PathPrefix(tpl string) *WSRouter {
+func (r *WebSocketRouter) PathPrefix(tpl string) WSRouter {
 	return newMuxRouter(r.Router.PathPrefix(tpl))
 }

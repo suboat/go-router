@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/suboat/go-router/routers/mux"
+	. "github.com/suboat/go-router/routers/mux"
 	"log"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func logS(v ...interface{}) {
 }
 
 func startServer() {
-	r := mux.NewMuxRouter().PathPrefix("/v1")
+	r := NewMuxRouter().PathPrefix("/v1")
 	r.HandleFunc("/",
 		func(w http.ResponseWriter, r *http.Request) {
 		},
@@ -24,5 +24,6 @@ func startServer() {
 		},
 	).Methods("GET")
 	logS("start...")
+	exit <- r.Error()
 	exit <- r.ListenAndServe(host_server)
 }

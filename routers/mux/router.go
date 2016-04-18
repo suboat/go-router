@@ -46,8 +46,8 @@ func (r *MuxRouter) Handle(path string, handler http.Handler) HTTPRouter {
 	return r
 }
 
-func (r *MuxRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) HTTPRouter {
-	r.newRoute().Path(path).HandlerFunc(f)
+func (r *MuxRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) HTTPRouter {
+	r.newRoute().Path(path).HandlerFunc(handler)
 	return r
 }
 

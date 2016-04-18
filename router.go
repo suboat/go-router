@@ -20,9 +20,6 @@ type WSRouter interface {
 	Route
 	Handle(string, http.Handler) WSRouter
 	HandleFunc(string, func(http.ResponseWriter, *http.Request)) WSRouter
-
-	Methods(...string) WSRouter
-	PathPrefix(string) WSRouter
 }
 
 type Router struct {

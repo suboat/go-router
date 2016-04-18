@@ -23,7 +23,7 @@ func NewWSRouter(r HTTPRouter) *WebSocketRouter {
 }
 
 func (r *WebSocketRouter) ListenAndServe(addr string) error {
-	r.err = r.Router.ListenAndServe(addr)
+	r.err = http.ListenAndServe(addr, nil)
 	return r.err
 }
 
@@ -32,20 +32,11 @@ func (r *WebSocketRouter) Error() error {
 }
 
 func (r *WebSocketRouter) Handle(path string, handler http.Handler) WSRouter {
-	r.Router.Handle(path, handler)
+	http.Handle(path, handler)
 	return r
 }
 
-func (r *WebSocketRouter) HandleFunc(path string, f func(http.ResponseWriter, *http.Request)) WSRouter {
-	r.Router.HandleFunc(path, f)
+func (r *WebSocketRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) WSRouter {
+	http.HandleFunc(path, handler)
 	return r
-}
-
-func (r *WebSocketRouter) Methods(methods ...string) WSRouter {
-	r.Router.Methods(methods...)
-	return r
-}
-
-func (r *WebSocketRouter) PathPrefix(tpl string) WSRouter {
-	return newMuxRouter(r.Router.PathPrefix(tpl))
 }

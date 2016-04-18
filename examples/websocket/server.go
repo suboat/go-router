@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
+	. "github.com/suboat/go-router/routers/mux"
+	. "github.com/suboat/go-router/routers/websocket"
 	"log"
 	"net/http"
 )
@@ -41,7 +43,16 @@ func echo(w http.ResponseWriter, r *http.Request) {
 }
 
 func startServer() {
-	http.HandleFunc("/echo", echo)
-	logS("start...")
-	exit <- http.ListenAndServe(host_server, nil)
+	if false {
+		http.HandleFunc("/echo", echo)
+		logS("start...")
+		exit <- http.ListenAndServe(host_server, nil)
+	} else {
+		mux := NewMuxRouter().PathPrefix("/v1")
+		r := NewWSRouter(mux)
+		r.HandleFunc("/echo", echo)
+		logS("start...")
+		exit <- r.Error()
+		exit <- r.ListenAndServe(host_server)
+	}
 }

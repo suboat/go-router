@@ -10,12 +10,12 @@ type WebSocketRouter struct {
 	err    error
 }
 
-func newMuxRouter(r HTTPRouter) *WebSocketRouter {
+func newWebSocketRouter(r HTTPRouter) *WebSocketRouter {
 	return &WebSocketRouter{Router: r}
 }
 
-func NewWSRouter(r HTTPRouter) *WebSocketRouter {
-	ws := newMuxRouter(r)
+func NewWebSocketRouter(r HTTPRouter) *WebSocketRouter {
+	ws := newWebSocketRouter(r)
 	if r == nil {
 		ws.err = ErrRouter
 	}

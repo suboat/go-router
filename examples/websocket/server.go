@@ -49,7 +49,7 @@ func startServer() {
 		exit <- http.ListenAndServe(host_server, nil)
 	} else {
 		mux := NewMuxRouter().PathPrefix("/v1")
-		r := NewWebSocketRouter(mux)
+		r := NewWSRouter(mux)
 		r.HandleFunc("/echo", echo)
 		logS("start...")
 		exit <- r.Error()

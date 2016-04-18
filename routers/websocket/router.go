@@ -5,38 +5,38 @@ import (
 	"net/http"
 )
 
-type WebSocketRouter struct {
+type WSRouter struct {
 	Router HTTPRoute
 	err    error
 }
 
-func newWebSocketRouter(r HTTPRoute) *WebSocketRouter {
-	return &WebSocketRouter{Router: r}
+func newWSRouter(r HTTPRoute) *WSRouter {
+	return &WSRouter{Router: r}
 }
 
-func NewWebSocketRouter(r HTTPRoute) *WebSocketRouter {
-	ws := newWebSocketRouter(r)
+func NewWSRouter(r HTTPRoute) *WSRouter {
+	ws := newWSRouter(r)
 	if r == nil {
 		ws.err = ErrRouter
 	}
 	return ws
 }
 
-func (r *WebSocketRouter) ListenAndServe(addr string) error {
+func (r *WSRouter) ListenAndServe(addr string) error {
 	r.err = http.ListenAndServe(addr, nil)
 	return r.err
 }
 
-func (r *WebSocketRouter) Error() error {
+func (r *WSRouter) Error() error {
 	return r.err
 }
 
-func (r *WebSocketRouter) Handle(path string, handler http.Handler) WSRoute {
+func (r *WSRouter) Handle(path string, handler http.Handler) WSRoute {
 	http.Handle(path, handler)
 	return r
 }
 
-func (r *WebSocketRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) WSRoute {
+func (r *WSRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) WSRoute {
 	http.HandleFunc(path, handler)
 	return r
 }

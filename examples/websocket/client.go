@@ -69,8 +69,8 @@ func startClient() {
 	}
 }
 
-func makeWSRequest(data interface{}) *WebSocketRequest {
-	return &WebSocketRequest{
+func makeWSRequest(data interface{}) *WSRequest {
+	return &WSRequest{
 		Tag:       "Tag",
 		RequestId: "RequestId",
 		Method:    MethodGet,

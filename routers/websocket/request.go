@@ -5,7 +5,7 @@ import (
 	. "github.com/suboat/go-router"
 )
 
-type WebSocketRequest struct {
+type WSRequest struct {
 	Tag       string
 	RequestId string
 	Header    *Header
@@ -16,12 +16,12 @@ type WebSocketRequest struct {
 	Ignore    bool
 }
 
-func (s *WebSocketRequest) Bytes() ([]byte, error) {
+func (s *WSRequest) Bytes() ([]byte, error) {
 	return json.Marshal(s)
 }
 
-func BytesToWSRequest(data []byte) (*WebSocketRequest, error) {
-	var r WebSocketRequest
+func BytesToWSRequest(data []byte) (*WSRequest, error) {
+	var r WSRequest
 	if err := json.Unmarshal(data, &r); err != nil {
 		return nil, err
 	}

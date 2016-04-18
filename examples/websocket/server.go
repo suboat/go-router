@@ -76,6 +76,13 @@ func startServer() {
 		exit <- http.ListenAndServe(host_server, nil)
 	} else {
 		mux := NewMuxRouter().PathPrefix("/v1")
+		mux.HandleFunc("/",
+			func(w http.ResponseWriter, r *http.Request) {
+				logS("Success!!!")
+				logS(fmt.Sprintf("%#v", w))
+				logS(fmt.Sprintf("%#v", r))
+			},
+		).Methods("GET")
 		h, err := NewWSHandle(mux, NewMyUpgrader())
 		if err != nil {
 			exit <- err
@@ -85,5 +92,6 @@ func startServer() {
 		logS("start...")
 		exit <- r.Error()
 		exit <- r.ListenAndServe(host_server)
+		exit <- r.Error()
 	}
 }

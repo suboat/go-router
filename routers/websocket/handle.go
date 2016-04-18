@@ -61,14 +61,14 @@ func (h *WSHandle) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *WSHandle) HandleRequest(data []byte, r *http.Request) (*WSRequest, error) {
-	req, err := BytesToWSRequest(data)
-	if err != nil {
+	var req WSRequest
+	if err := req.FromBytes(data); err != nil {
 		return nil, err
 	} else if !req.Valid() {
 		return nil, ErrWSRequest
 	}
 	req.Request = r
-	return req, nil
+	return &req, nil
 }
 
 func (h *WSHandle) HandleResponse(req *WSRequest, w http.ResponseWriter) (*WSResponse, error) {

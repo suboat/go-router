@@ -35,7 +35,7 @@ func (r *WSRouter) Handle(path string) WSRoute {
 	return r
 }
 
-func (r *WSRouter) HandleFunc(path string) WSRoute {
-	http.Handle(path, r.Handler)
+// TODO:未完成
+func (r *WSRouter) HandleBind(path string, handler WSHandler) WSRoute {
 	return r
 }

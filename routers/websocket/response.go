@@ -32,6 +32,10 @@ func NewWSResponse(req *WSRequest, w http.ResponseWriter) (*WSResponse, error) {
 	}, nil
 }
 
+func (s *WSResponse) IsHTTP() bool {
+	return false
+}
+
 func (s *WSResponse) Valid() bool {
 	return len(s.Methods) != 0 && len(s.URL) != 0
 }
@@ -40,10 +44,13 @@ func (s *WSResponse) Bytes() ([]byte, error) {
 	return json.Marshal(s)
 }
 
-func BytesToWSResponse(data []byte) (*WSResponse, error) {
-	var r WSResponse
-	if err := json.Unmarshal(data, &r); err != nil {
-		return nil, err
+func (s *WSResponse) FromBytes(data []byte) error {
+	if err := json.Unmarshal(data, s); err != nil {
+		return err
 	}
-	return &r, nil
+	return nil
+}
+
+func (s *WSResponse) GetResponseWriter() http.ResponseWriter {
+	return s.ResponseWriter
 }

@@ -41,21 +41,21 @@ func (r *MuxRouter) Error() error {
 	return r.err
 }
 
-func (r *MuxRouter) Handle(path string, handler http.Handler) HPRouter {
+func (r *MuxRouter) Handle(path string, handler http.Handler) HTTPRoute {
 	r.newRoute().Path(path).Handler(handler)
 	return r
 }
 
-func (r *MuxRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) HPRouter {
+func (r *MuxRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) HTTPRoute {
 	r.newRoute().Path(path).HandlerFunc(handler)
 	return r
 }
 
-func (r *MuxRouter) Methods(methods ...string) HPRouter {
+func (r *MuxRouter) Methods(methods ...string) HTTPRoute {
 	r.getRoute().Methods(methods...)
 	return r
 }
 
-func (r *MuxRouter) PathPrefix(tpl string) HPRouter {
+func (r *MuxRouter) PathPrefix(tpl string) HTTPRoute {
 	return newMuxRouter(r.newRoute().PathPrefix(tpl).Subrouter())
 }

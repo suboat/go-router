@@ -1,4 +1,4 @@
-package gorouter
+package router
 
 const (
 	HeaderSession string = "Session"

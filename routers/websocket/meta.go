@@ -1,4 +1,4 @@
-package gorouter
+package router
 
 type Meta struct {
 	Key   map[string]interface{}

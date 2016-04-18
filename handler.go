@@ -2,7 +2,7 @@ package gorouter
 
 import "net/http"
 
-type HandlerFunc func(Request) Response
+type WSHandlerFunc func(Request) Response
 
 type WSHandler interface {
 	ServeWS(Request) Response

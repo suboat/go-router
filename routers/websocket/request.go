@@ -1,8 +1,11 @@
 package router
 
-import "encoding/json"
+import (
+	"encoding/json"
+	. "github.com/suboat/go-router"
+)
 
-type WSRequest struct {
+type WebSocketRequest struct {
 	Tag       string
 	RequestId string
 	Header    *Header
@@ -13,12 +16,12 @@ type WSRequest struct {
 	Ignore    bool
 }
 
-func (s *WSRequest) Bytes() ([]byte, error) {
+func (s *WebSocketRequest) Bytes() ([]byte, error) {
 	return json.Marshal(s)
 }
 
-func BytesToWSRequest(data []byte) (*WSRequest, error) {
-	var r WSRequest
+func BytesToWSRequest(data []byte) (*WebSocketRequest, error) {
+	var r WebSocketRequest
 	if err := json.Unmarshal(data, &r); err != nil {
 		return nil, err
 	}

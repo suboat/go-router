@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/websocket"
+	. "github.com/suboat/go-router"
 	. "github.com/suboat/go-router/routers/websocket"
 	"log"
 	"net/url"
@@ -68,8 +69,8 @@ func startClient() {
 	}
 }
 
-func makeWSRequest(data interface{}) *WSRequest {
-	return &WSRequest{
+func makeWSRequest(data interface{}) *WebSocketRequest {
+	return &WebSocketRequest{
 		Tag:       "Tag",
 		RequestId: "RequestId",
 		Method:    MethodGet,

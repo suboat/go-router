@@ -1,5 +1,5 @@
 # go-router
 
-## v0.1
+## v0.2
 
 ## The project is in development :)

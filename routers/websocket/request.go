@@ -2,19 +2,12 @@ package router
 
 import (
 	"encoding/json"
-	. "github.com/suboat/go-router"
 	"net/http"
 )
 
 type WSRequest struct {
-	Request   *http.Request `json:"-"`
-	Tag       string
-	RequestId string
-	Meta      *Meta
-	Methods   []string
-	URL       string
-	Data      interface{}
-	Ignore    bool
+	Request *http.Request `json:"-"`
+	Tag     string
 }
 
 func NewWSRequest(r *http.Request) *WSRequest {
@@ -26,7 +19,7 @@ func (s *WSRequest) IsHTTP() bool {
 }
 
 func (s *WSRequest) Valid() bool {
-	return len(s.Methods) != 0 && len(s.URL) != 0
+	return len(s.Tag) != 0
 }
 
 func (s *WSRequest) Bytes() ([]byte, error) {

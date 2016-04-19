@@ -25,6 +25,10 @@ func NewGinRouter() *GinRouter {
 	return NewGinRouterWithEngine(gin.New())
 }
 
+func (s *GinRouter) GetEngine() *gin.Engine {
+	return s.Engine
+}
+
 type ginRoute struct {
 	Router  *gin.RouterGroup
 	Path    string
@@ -84,4 +88,8 @@ func (r *GinRouter) Methods(methods ...string) HTTPRoute {
 
 func (r *GinRouter) PathPrefix(tpl string) HTTPRoute {
 	return newGinRouter(r.Engine, r.Router.Group(tpl))
+}
+
+func (r *GinRouter) Group(relativePath string) HTTPRoute {
+	return r.PathPrefix(relativePath)
 }

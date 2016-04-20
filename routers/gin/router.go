@@ -62,17 +62,14 @@ func (r *GinRouter) Error() error {
 	return r.err
 }
 
-func (r *GinRouter) HandleGin(path string, handler gin.HandlerFunc) HTTPRoute {
-	r.newRoute(path, handler)
+func (r *GinRouter) Handle(path string, handler http.Handler) HTTPRoute {
+	r.HandleGin(path, gin.WrapH(handler))
 	return r
 }
 
-func (r *GinRouter) Handle(path string, handler http.Handler) HTTPRoute {
-	return r.HandleGin(path, gin.WrapH(handler))
-}
-
 func (r *GinRouter) HandleFunc(path string, handler func(http.ResponseWriter, *http.Request)) HTTPRoute {
-	return r.HandleGin(path, gin.WrapF(handler))
+	r.HandleGin(path, gin.WrapF(handler))
+	return r
 }
 
 func (r *GinRouter) HandleBind(path string, handler HandleBind) HTTPRoute {
@@ -88,8 +85,4 @@ func (r *GinRouter) Methods(methods ...string) HTTPRoute {
 
 func (r *GinRouter) PathPrefix(tpl string) HTTPRoute {
 	return newGinRouter(r.Engine, r.Router.Group(tpl))
-}
-
-func (r *GinRouter) Group(relativePath string) HTTPRoute {
-	return r.PathPrefix(relativePath)
 }

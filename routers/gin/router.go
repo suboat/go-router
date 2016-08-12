@@ -58,6 +58,11 @@ func (r *GinRouter) ListenAndServe(addr string) error {
 	return r.err
 }
 
+func (r *GinRouter) ListenAndServeTLS(addr string, certFile string, keyFile string) error {
+	r.err = r.Engine.RunTLS(addr, certFile, keyFile)
+	return r.err
+}
+
 func (r *GinRouter) Error() error {
 	return r.err
 }
